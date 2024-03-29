@@ -1,11 +1,12 @@
-"use client"
-import { signOut } from "next-auth/react";
+import BoardTasks from "./components/BoardTasks";
+import Sidebar from "./components/Sidebar";
+
 
 export default function Home() {
   return (
-    <main>
-      <p>Hi</p>
-      <button onClick={() => signOut()}>Logout</button>
+    <main className="flex h-full">
+      <Sidebar/>
+      <BoardTasks />
     </main>
   );
 }
