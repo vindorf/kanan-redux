@@ -11,12 +11,11 @@ export default function Navbar() {
   const [show, setShow] = useState<boolean>(false);
   const { data } = useFetchDataFromDbQuery();
   const dispatch = useAppDispatch();
-  console.log('DATA', data)
+ 
   
 
   useEffect(() => {
     if (data) {
-      // When a user signs in, set the currentBoardName to the first board's name
       const activeBoard = data[0].boards[0];
       dispatch(setPageTitle(activeBoard.name));
     }
