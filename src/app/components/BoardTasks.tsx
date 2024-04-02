@@ -82,7 +82,7 @@ export default function BoardTasks() {
                           );
                         })
                       ) : (
-                        <div className="mt-6 h-full rounded-md border-dashed border-4 border-white" />
+                        <div className="mt-6 h-full rounded-md border-dashed border-2 border-white" />
                       ))}
                   </div>
                 );
