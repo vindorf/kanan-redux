@@ -1,31 +1,43 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {RootState} from "../store";
+import { RootState } from "../store";
 
 const initialState = {
-    currentBoardName: "",
-   };
+  currentBoardName: "",
+  isAddAndEditBoardModal: { isOpen: false, variant: "" },
+};
 
-   export const features = createSlice({
-   // Name of the slice
-   name: "features",
-   initialState,
-   // Functions that update the initialState are written inside the reducers object
-   reducers: {
-    // This function updates the board name when called
+export const features = createSlice({
+  name: "features",
+  initialState,
+  reducers: {
     setPageTitle: (state, action: PayloadAction<string>) => {
       state.currentBoardName = action.payload;
     },
-   },
-   });
 
-   export const { setPageTitle } = features.actions;
+    openAddAndEditBoardModal: (state, { payload }) => {
+      state.isAddAndEditBoardModal.isOpen = true;
+      state.isAddAndEditBoardModal.variant = payload;
+    },
+    closeAddAndEditBoardModal: (state) => {
+      state.isAddAndEditBoardModal.isOpen = false;
+      state.isAddAndEditBoardModal.variant = "";
+    },
+  },
+});
 
-   // Selector function to retrieve the current board name from the state
-   export const getPageTitle = (state: RootState) => state.features.currentBoardName;
+export const { 
+  setPageTitle, 
+  openAddAndEditBoardModal,
+  closeAddAndEditBoardModal, 
+} = features.actions;
 
-   // Export the reducer for use in the Redux store
-   export default features.reducer;
+export const getPageTitle = (state: RootState) =>
+  state.features.currentBoardName;
 
+export const getAddAndEditBoardModalValue = (state: RootState) => 
+  state.features.isAddAndEditBoardModal.isOpen;  
 
+export const getAddAndEditBoardModalVariantValue = (state: RootState) => 
+  state.features.isAddAndEditBoardModal.variant;  
 
-
+export default features.reducer;

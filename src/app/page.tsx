@@ -6,6 +6,8 @@ import { db } from "./utils/firebaseConfig";
 import {useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
 import {data} from "...@/components/app/utils/data"
+import AddAndEditBoardModal from "./components/AddAndEditBoardModal";
+
 
 
 
@@ -58,6 +60,7 @@ export default function Home() {
     <main className="flex h-full">
       <Sidebar/>
       <BoardTasks />
+      <AddAndEditBoardModal />
     </main>
   );
 }
