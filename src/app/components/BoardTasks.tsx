@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useFetchDataFromDbQuery } from "../../redux/services/apiSlice";
-import { useAppSelector } from "../../redux/hooks";
-import { getPageTitle } from "../../redux/features/appSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getPageTitle, openAddAndEditBoardModal } from "../../redux/features/appSlice";
 import { MdEdit, MdDelete } from "react-icons/md";
 
-// Define types for the tasks data
 interface ITask {
   title: string;
   description: string;
@@ -12,7 +11,6 @@ interface ITask {
   id: string;
 }
 
-// Define types for the data in each column
 interface Column {
   name: string;
   tasks?: ITask[];
@@ -20,19 +18,15 @@ interface Column {
 }
 
 export default function BoardTasks() {
-  // Get loading state and data from the useFetchDataFromDbQuery endpoint
   const { isLoading, data } = useFetchDataFromDbQuery();
-  // Manage column data in columns state
   const [columns, setColumns] = useState<Column[]>([]);
-  // Get active board name from the redux store
   const activeBoard = useAppSelector(getPageTitle);
+  const dispatch = useAppDispatch();
 
-  // Once data fetches successfully, this function in the useEffect runs
   useEffect(() => {
     if (data !== undefined) {
       const [boards] = data;
       if (boards) {
-        // Get the data of the active board
         const activeBoardData = boards.boards.find(
           (board: { name: string }) => board.name === activeBoard
         );
@@ -46,12 +40,10 @@ export default function BoardTasks() {
 
   return (
     <div className="overflow-x-auto overflow-y-auto w-full p-6 bg-stone-200">
-      {/* If data has not been fetched successfully, display a loading state, else display the column of tasks */}
       {isLoading ? (
         <p className="text-3xl w-full text-center font-bold">Loading tasks...</p>
       ) : (
         <>
-          {/* If columns of tasks isn't empty: display the tasks, else display the prompt to add a new column */}
           {columns.length > 0 ? (
             <div className="flex space-x-6">
               {columns.map((column) => {
@@ -63,7 +55,6 @@ export default function BoardTasks() {
                     })`}</p>
 
                     {tasks &&
-                      // Display the tasks if there are tasks in the column, if not, display an empty column
                       (tasks.length > 0 ? (
                         tasks.map((task) => {
                           const { id, title, status } = task;
@@ -87,9 +78,10 @@ export default function BoardTasks() {
                   </div>
                 );
               })}
-              {/* If the number of columns of tasks is less than 7, display an option to add more columns */}
               {columns.length < 7 ? (
-                <div className="rounded-md bg-white w-[17.5rem] mt-12 shrink-0 flex justify-center items-center">
+                <div 
+                onClick={()  => dispatch(openAddAndEditBoardModal('Edit Board'))}
+                className="rounded-md bg-white w-[17.5rem] mt-12 shrink-0 flex justify-center items-center">
                   <p className="cursor-pointer font-bold text-black text-2xl">
                     + New Column
                   </p>
